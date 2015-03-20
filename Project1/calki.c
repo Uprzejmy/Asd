@@ -3,12 +3,22 @@
 #include <time.h>
 #include <math.h>
 
-int* generatePoint(int xFrom, int xTo, int yFrom, int yTo);
-int generateCoordinate(int from, int to);
+double* generatePoint(double xFrom, double xTo, double yFrom, double yTo);
+double generateCoordinate(double from, double to);
 
 int main()
 {
   srand(time(NULL));
+
+  double* point;
+  int i;
+
+  for(i=0;i<50;i++)
+  {
+    point = generatePoint(0,2,0,5);
+
+    printf("x = %lf, y = %lf \n",point[0],point[1]);
+  }
 
   return 0;
 }
@@ -19,12 +29,13 @@ int main()
  *  range of y coordinate (yFrom,yTo)
  *
  * return:
- *  int array(2): [0] -> x coordinate
- *                [1] -> y coordinate
+ *  double array(2): [0] -> x coordinate
+ *                   [1] -> y coordinate
+ *
  */
-int* generatePoint(int xFrom, int xTo, int yFrom, int yTo)
+double* generatePoint(double xFrom, double xTo, double yFrom, double yTo)
 {
-  static int point[2];
+  static double point[2];
 
   point[0] = generateCoordinate(xFrom, xTo);
   point[1] = generateCoordinate(yFrom, yTo);
@@ -37,10 +48,10 @@ int* generatePoint(int xFrom, int xTo, int yFrom, int yTo)
  *  range of a coordinate (from,to)
  *
  * return:
- *  int: coordinate
- *          
+ *  double: coordinate
+ *      
  */
-int generateCoordinate(int from, int to)
+double generateCoordinate(double from, double to)
 {
-  return rand()%(to-from)+from;
+  return (double)rand()/RAND_MAX * (to-from) + from;
 }
