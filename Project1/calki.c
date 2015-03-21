@@ -3,24 +3,121 @@
 #include <time.h>
 #include <math.h>
 
+int amountOfIntervals = 10000;
+int amountOfSamples = 500000;
 double* generatePoint(double xFrom, double xTo, double yFrom, double yTo);
 double generateCoordinate(double from, double to);
+double function1(double x);
+double rectangleIntegration(double from, double to, double (*function)(double));
+double trapeziumIntegration(double from, double to, double (*function)(double));
+double monteCarloIntegration(double from, double to, double (*function)(double));
+double findLocalMax(double from, double to, double (*function)(double));
+double findLocalMin(double from, double to, double (*function)(double));
 
 int main()
 {
+  double from,to;
+
   srand(time(NULL));
 
-  double* point;
-  int i;
+  printf("Podaj wartosci przedzialow, dla ktorych bedzie liczona calka\n");
+  scanf("%lf %lf",&from,&to);
+  printf("\n");
 
-  for(i=0;i<50;i++)
-  {
-    point = generatePoint(0,2,0,5);
+  printf("%lf\n",rectangleIntegration(from,to,&function1));
+  printf("%lf\n",trapeziumIntegration(from,to,&function1));
+  printf("%lf\n",monteCarloIntegration(from,to,&function1));
 
-    printf("x = %lf, y = %lf \n",point[0],point[1]);
-  }
 
   return 0;
+}
+
+double rectangleIntegration(double from, double to, double (*function)(double))
+{
+  double interval = (to-from)/amountOfIntervals;
+  double sum = 0;
+  double x;
+
+  for(x=from;x<to;x+=interval)
+  {
+    sum+=interval*function((x+interval)/2);
+  }
+
+  return sum;
+}
+
+double trapeziumIntegration(double from, double to, double (*function)(double))
+{
+  double interval = (to-from)/amountOfIntervals;
+  double sum = 0;
+  double x;
+
+  for(x=from;x<to;x+=interval)
+  {
+    sum+=interval/2*(function(x)+function(x+interval));
+  }
+
+  return sum;
+}
+
+double monteCarloIntegration(double from, double to, double (*function)(double))
+{
+  int i,hits;
+  double fx;
+  double* point;
+
+  double max = findLocalMax(from,to,*function);
+  double min = findLocalMin(from,to,*function);
+
+  for(i=0;i<amountOfSamples;i++)
+  {
+    point = generatePoint(from,to,min,max);
+    fx = function(point[0]);
+    if(fx>0)
+    {
+      if(point[1]<fx)
+        hits++;
+    }
+    else if(fx<0)
+    {
+      if(point[1]>fx)
+        hits--;
+    }
+  }
+
+  return (to-from)*(max-min)*hits/amountOfSamples;
+}
+
+double findLocalMax(double from, double to, double (*function)(double))
+{
+  double interval = (to-from)/amountOfIntervals;
+  double max = 0;
+  double x,fx;
+
+  for(x=from;x<to;x+=interval)
+  {
+    fx = function(x);
+    if(fx>max) 
+      max = fx;
+  }
+
+  return max;
+}
+
+double findLocalMin(double from, double to, double (*function)(double))
+{
+  double interval = (to-from)/amountOfIntervals;
+  double min = 0;
+  double x,fx;
+
+  for(x=from;x<to;x+=interval)
+  {
+    fx = function(x);
+    if(fx<min) 
+      min = fx;
+  }
+
+  return min;
 }
 
 /**
@@ -54,4 +151,9 @@ double* generatePoint(double xFrom, double xTo, double yFrom, double yTo)
 double generateCoordinate(double from, double to)
 {
   return (double)rand()/RAND_MAX * (to-from) + from;
+}
+
+double function1(double x)
+{
+  return pow(sin(2*x),3)+4;
 }
