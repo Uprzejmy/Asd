@@ -94,7 +94,7 @@ double monteCarloIntegration(double from, double to, double (*function)(double))
  *  function to find local maximum
  *
  * return:
- *  double: MIN(localMaximum,0)
+ *  double: MIN(localMaximum,0)*1,1 (safety reasons!)
  *
  */
 double findLocalMax(double from, double to, double (*function)(double))
@@ -110,7 +110,7 @@ double findLocalMax(double from, double to, double (*function)(double))
       max = fx;
   }
 
-  return max;
+  return max*1.1;
 }
 
 /**
@@ -119,7 +119,7 @@ double findLocalMax(double from, double to, double (*function)(double))
  *  function to find local minimum
  *
  * return:
- *  double: MAX(localMinimum,0)
+ *  double: MAX(localMinimum,0)*1,1 (safety reasons!)
  *
  */
 double findLocalMin(double from, double to, double (*function)(double))
@@ -135,7 +135,7 @@ double findLocalMin(double from, double to, double (*function)(double))
       min = fx;
   }
 
-  return min;
+  return min*1.1;
 }
 
 /**
