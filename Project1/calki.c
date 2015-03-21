@@ -88,6 +88,15 @@ double monteCarloIntegration(double from, double to, double (*function)(double))
   return (to-from)*(max-min)*hits/amountOfSamples;
 }
 
+/**
+ * parameters:
+ *  interval (from,to)
+ *  function to find local maximum
+ *
+ * return:
+ *  double: MIN(localMaximum,0)
+ *
+ */
 double findLocalMax(double from, double to, double (*function)(double))
 {
   double interval = (to-from)/amountOfIntervals;
@@ -104,6 +113,15 @@ double findLocalMax(double from, double to, double (*function)(double))
   return max;
 }
 
+/**
+ * parameters:
+ *  interval (from,to)
+ *  function to find local minimum
+ *
+ * return:
+ *  double: MAX(localMinimum,0)
+ *
+ */
 double findLocalMin(double from, double to, double (*function)(double))
 {
   double interval = (to-from)/amountOfIntervals;
