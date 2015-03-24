@@ -67,7 +67,9 @@ double trapeziumIntegration(double from, double to, double (*function)(double))
 
 double monteCarloIntegration(double from, double to, double (*function)(double))
 {
-  int i,hits;
+  int i;
+  int hits=0;
+  
   double fx;
   double* point;
 
