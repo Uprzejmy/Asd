@@ -7,6 +7,8 @@ int amountOfIntervals = 10000;
 int amountOfSamples = 500000;
 double function1(double x);
 double function2(double x);
+double function3(double x);
+double function4(double x);
 double rectangleIntegration(double from, double to, double (*function)(double));
 double trapeziumIntegration(double from, double to, double (*function)(double));
 double monteCarloIntegration(double from, double to, double (*function)(double));
@@ -33,6 +35,13 @@ int main()
   printf("%lf\n",trapeziumIntegration(from,to,&function2));
   printf("%lf\n",monteCarloIntegration(from,to,&function2));
 
+  printf("%lf\n",rectangleIntegration(from,to,&function3));
+  printf("%lf\n",trapeziumIntegration(from,to,&function3));
+  printf("%lf\n",monteCarloIntegration(from,to,&function3));
+
+  printf("%lf\n",rectangleIntegration(from,to,&function4));
+  printf("%lf\n",trapeziumIntegration(from,to,&function4));
+  printf("%lf\n",monteCarloIntegration(from,to,&function4));
 
   return 0;
 }
@@ -43,12 +52,12 @@ double rectangleIntegration(double from, double to, double (*function)(double))
   double sum = 0;
   double x;
 
-  for(x=from;x<to;x+=interval)
+  for(x=from+interval/2;x<to;x+=interval)
   {
-    sum+=interval*function(x+interval/2);
+    sum+=function(x);
   }
 
-  return sum;
+  return sum*interval;
 }
 
 double trapeziumIntegration(double from, double to, double (*function)(double))
@@ -59,10 +68,10 @@ double trapeziumIntegration(double from, double to, double (*function)(double))
 
   for(x=from;x<to;x+=interval)
   {
-    sum+=interval/2*(function(x)+function(x+interval));
+    sum+=function(x)+function(x+interval);
   }
 
-  return sum;
+  return sum*interval/2;
 }
 
 double monteCarloIntegration(double from, double to, double (*function)(double))
@@ -185,5 +194,15 @@ double function1(double x)
 
 double function2(double x)
 {
-  return 2*pow(log(x/3),1.0/2);
+  return 2*x*log(pow(x,2));
+}
+
+double function3(double x)
+{
+  return 4*pow(x,3)+3*pow(x,2)+2*x+1;
+}
+
+double function4(double x)
+{
+  return 2*x/(pow(x,2)+5);
 }
