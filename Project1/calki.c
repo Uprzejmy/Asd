@@ -5,14 +5,15 @@
 
 int amountOfIntervals = 10000;
 int amountOfSamples = 500000;
-double* generatePoint(double xFrom, double xTo, double yFrom, double yTo);
-double generateCoordinate(double from, double to);
 double function1(double x);
+double function2(double x);
 double rectangleIntegration(double from, double to, double (*function)(double));
 double trapeziumIntegration(double from, double to, double (*function)(double));
 double monteCarloIntegration(double from, double to, double (*function)(double));
 double findLocalMax(double from, double to, double (*function)(double));
 double findLocalMin(double from, double to, double (*function)(double));
+double* generatePoint(double xFrom, double xTo, double yFrom, double yTo);
+double generateCoordinate(double from, double to);
 
 int main()
 {
@@ -28,6 +29,10 @@ int main()
   printf("%lf\n",trapeziumIntegration(from,to,&function1));
   printf("%lf\n",monteCarloIntegration(from,to,&function1));
 
+  printf("%lf\n",rectangleIntegration(from,to,&function2));
+  printf("%lf\n",trapeziumIntegration(from,to,&function2));
+  printf("%lf\n",monteCarloIntegration(from,to,&function2));
+
 
   return 0;
 }
@@ -40,7 +45,7 @@ double rectangleIntegration(double from, double to, double (*function)(double))
 
   for(x=from;x<to;x+=interval)
   {
-    sum+=interval*function((x+interval)/2);
+    sum+=interval*function(x+interval/2);
   }
 
   return sum;
@@ -174,4 +179,9 @@ double generateCoordinate(double from, double to)
 double function1(double x)
 {
   return pow(sin(2*x),3)+4;
+}
+
+double function2(double x)
+{
+  return 2*pow(log(x/3),1.0/2);
 }
