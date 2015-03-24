@@ -1,3 +1,10 @@
+/**
+ * Program liczy całki oznaczone wybranych funkcji matematycznych
+ *
+ * autor: Łukasz Merynda
+ * kontakt: lmerynda@gmail.com
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
