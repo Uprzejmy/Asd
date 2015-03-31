@@ -3,6 +3,8 @@
  *
  * autor: Łukasz Merynda
  * kontakt: lmerynda@gmail.com
+ *
+ * kompilowalem gcc -g -Wall calki.c -o calki -lm
  */
 
 #include <stdio.h>
@@ -30,25 +32,51 @@ int main()
 
   srand(time(NULL));
 
-  printf("Podaj wartosci przedzialow, dla ktorych bedzie liczona calka\n");
-  scanf("%lf %lf",&from,&to);
-  printf("\n");
+  // printf("Podaj wartosci przedzialow, dla ktorych bedzie liczona calka\n");
+  // scanf("%lf %lf",&from,&to);
+  // printf("\n");
 
-  printf("%lf\n",rectangleIntegration(from,to,&function1));
-  printf("%lf\n",trapeziumIntegration(from,to,&function1));
-  printf("%lf\n",monteCarloIntegration(from,to,&function1));
+  printf("Sinus\n");
 
-  printf("%lf\n",rectangleIntegration(from,to,&function2));
-  printf("%lf\n",trapeziumIntegration(from,to,&function2));
-  printf("%lf\n",monteCarloIntegration(from,to,&function2));
+  from=-20*M_PI;
+  to=20*M_PI;
 
-  printf("%lf\n",rectangleIntegration(from,to,&function3));
-  printf("%lf\n",trapeziumIntegration(from,to,&function3));
-  printf("%lf\n",monteCarloIntegration(from,to,&function3));
+  printf("Przedział całkowania: ( %lf , %lf )\n",from,to);
+  printf("Prostokaty: %lf\n",rectangleIntegration(from,to,&function1));
+  printf("Trapezy: %lf\n",trapeziumIntegration(from,to,&function1));
+  printf("Monte Carlo: %lf\n",monteCarloIntegration(from,to,&function1));
 
-  printf("%lf\n",rectangleIntegration(from,to,&function4));
-  printf("%lf\n",trapeziumIntegration(from,to,&function4));
-  printf("%lf\n",monteCarloIntegration(from,to,&function4));
+
+  printf("\n\n\nLogarytm\n");
+
+  from=-1.5;
+  to=2.5;
+
+  printf("Przedział całkowania: ( %lf , %lf )\n",from,to);
+  printf("Prostokaty: %lf\n",rectangleIntegration(from,to,&function2));
+  printf("Trapezy: %lf\n",trapeziumIntegration(from,to,&function2));
+  printf("Monte Carlo: %lf\n",monteCarloIntegration(from,to,&function2));
+
+
+  printf("\n\n\nWielomian\n");
+
+  from=-1.5;
+  to=1;
+
+  printf("Przedział całkowania: ( %lf , %lf )\n",from,to);
+  printf("Prostokaty: %lf\n",rectangleIntegration(from,to,&function3));
+  printf("Trapezy: %lf\n",trapeziumIntegration(from,to,&function3));
+  printf("Monte Carlo: %lf\n",monteCarloIntegration(from,to,&function3));
+
+  printf("\n\n\nWymierna\n");
+
+  from=-20.0;
+  to=30.0;
+
+  printf("Przedział całkowania: ( %lf , %lf )\n",from,to);
+  printf("Prostokaty: %lf\n",rectangleIntegration(from,to,&function4));
+  printf("Trapezy: %lf\n",trapeziumIntegration(from,to,&function4));
+  printf("Monte Carlo: %lf\n",monteCarloIntegration(from,to,&function4));
 
   return 0;
 }
@@ -96,12 +124,12 @@ double monteCarloIntegration(double from, double to, double (*function)(double))
   {
     point = generatePoint(from,to,min,max);
     fx = function(point[0]);
-    if(fx>0)
+    if(point[1]>0)
     {
       if(point[1]<fx)
         hits++;
     }
-    else if(fx<0)
+    else if(point[1]<0)
     {
       if(point[1]>fx)
         hits--;
@@ -191,7 +219,7 @@ double* generatePoint(double xFrom, double xTo, double yFrom, double yTo)
  */
 double generateCoordinate(double from, double to)
 {
-  return (double)rand()/RAND_MAX * (to-from) + from;
+  return (double)rand() / RAND_MAX * (to-from) + from;
 }
 
 double function1(double x)
