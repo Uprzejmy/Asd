@@ -1,5 +1,6 @@
 /**
  * Program sortuje wygenerowane zbiory
+ * Wartosc stalej N decyduje o wielkosci danych, a zatem ilosci potrzebnego miejsca w tablicy i ilosci wygenerowanych danych.
  *
  * autor: Łukasz Merynda
  * kontakt: lmerynda@gmail.com
@@ -12,7 +13,7 @@
 #include <time.h>
 #include <math.h>
 
-#define N 20
+#define N 50000
 
 void quicksort(int array[], int p, int k);
 int partition(int array[], int p, int k);
@@ -34,12 +35,13 @@ void swap(int &a,int &b);
 void copyArray(int from[], int to[]);
 void fillArrayFromFile(int array[], int n);
 void writeDataToFile(int n);
+void writeTimesToFile(int times[]);
 
 int main()
 {
-
-  int array[N+1];
-  int i;
+  int array[N+1];//heapsort requires indexes from 1 to N
+  int times[6];
+  int i,t;
 
   srand(time(NULL));
 
@@ -47,15 +49,12 @@ int main()
   fillArrayFromFile(array, N);
 
 
-  printf("Poczatkowa tablica\n");
-  printArray(array,0,N-1);
-
-
   //quicksort
   printf("Quicksort\n");
   fillArrayFromFile(array, N);
+  t = time(0);
   quicksort(array,0,N-1);
-  printArray(array,0,N-1);
+  times[0] = time(0) - t;
 
 
   //heapsort
@@ -65,36 +64,44 @@ int main()
   {
     array[i] = array[i-1];
   }
+  t = time(0);
   heapsort(array,N);
-  printArray(array,1,N);
+  times[1] = time(0) - t;
 
 
   //shellsort
   printf("Shellsort\n");
   fillArrayFromFile(array, N);
+  t = time(0);
   shellsort(array,N);
-  printArray(array,0,N-1);
+  times[2] = time(0) - t;
   
 
   //bubblesort
   printf("Bubblesort\n");
   fillArrayFromFile(array, N);
+  t = time(0);
   bubblesort(array,N);
-  printArray(array,0,N-1);
+  times[3] = time(0) - t;
 
 
   //insertsort
   printf("Insertsort\n");
   fillArrayFromFile(array, N);
+  t = time(0);
   insertsort(array,N);
-  printArray(array,0,N-1);
+  times[4] = time(0) - t;
 
 
   //selectsort
   printf("Selectsort\n");
   fillArrayFromFile(array, N);
+  t = time(0);
   selectsort(array,N);
-  printArray(array,0,N-1);
+  times[5] = time(0) - t;
+
+
+  writeTimesToFile(times);
 
 
   return 0;
@@ -347,6 +354,25 @@ void fillArrayFromFile(int array[], int n)
   }
 
   fclose(fip);
+
+  return;
+}
+
+void writeTimesToFile(int times[])
+{
+  FILE* fop;
+
+  fop=fopen("wynik.txt", "a");
+
+  fprintf(fop, "Czas dla %d danych\n",N);
+  fprintf(fop, "Quicksort: %d\n", times[0]);
+  fprintf(fop, "Heapsort: %d\n", times[1]);
+  fprintf(fop, "Shellsort: %d\n", times[2]);
+  fprintf(fop, "Bubble: %d\n", times[3]);
+  fprintf(fop, "Insertsort: %d\n", times[4]);
+  fprintf(fop, "Selectsort: %d\n\n", times[5]);
+
+  fclose(fop);
 
   return;
 }
