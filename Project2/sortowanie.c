@@ -5,7 +5,6 @@
  * autor: Łukasz Merynda
  * kontakt: lmerynda@gmail.com
  *
- * kompilowalem g++ -g -Wall sortowanie.cpp -o sortowanie
  */
 
 #include <stdio.h>
@@ -13,7 +12,7 @@
 #include <time.h>
 #include <math.h>
 
-#define N 50000
+#define N 20000
 
 void quicksort(int array[], int p, int k);
 int partition(int array[], int p, int k);
@@ -33,6 +32,7 @@ void selectsort(int array[], int n);
 void printArray(int array[], int p, int k);
 void swap(int &a,int &b);
 void copyArray(int from[], int to[]);
+void invertArray(int array[], int n);
 void fillArrayFromFile(int array[], int n);
 void writeDataToFile(int n);
 void writeTimesToFile(int times[]);
@@ -40,7 +40,7 @@ void writeTimesToFile(int times[]);
 int main()
 {
   int array[N+1];//heapsort requires indexes from 1 to N
-  int times[6];
+  int times[18];
   int i,t;
 
   srand(time(NULL));
@@ -52,9 +52,24 @@ int main()
   //quicksort
   printf("Quicksort\n");
   fillArrayFromFile(array, N);
+
+  //sort random values
   t = time(0);
   quicksort(array,0,N-1);
   times[0] = time(0) - t;
+
+  //sort ascended data
+  t = time(0);
+  quicksort(array,0,N-1);
+  times[1] = time(0) - t;
+
+  invertArray(array, N);
+
+  //sort descended data
+  t = time(0);
+  quicksort(array,0,N-1);
+  times[2] = time(0) - t;
+
 
 
   //heapsort
@@ -64,41 +79,115 @@ int main()
   {
     array[i] = array[i-1];
   }
+
+  //sort random values
   t = time(0);
   heapsort(array,N);
-  times[1] = time(0) - t;
+  times[3] = time(0) - t;
+
+  //sort ascended data
+  t = time(0);
+  heapsort(array,N);
+  times[4] = time(0) - t;
+
+  //sort descended data
+  invertArray(array, N);
+
+  t = time(0);
+  heapsort(array,N);
+  times[5] = time(0) - t;
+
 
 
   //shellsort
   printf("Shellsort\n");
   fillArrayFromFile(array, N);
+
+  //sort random values
   t = time(0);
   shellsort(array,N);
-  times[2] = time(0) - t;
+  times[6] = time(0) - t;
+
+  //sort ascended data
+  t = time(0);
+  shellsort(array,N);
+  times[7] = time(0) - t;
+
+  //sort descended data
+  invertArray(array, N);
+
+  t = time(0);
+  shellsort(array,N);
+  times[8] = time(0) - t;
   
+
 
   //bubblesort
   printf("Bubblesort\n");
   fillArrayFromFile(array, N);
+
+  //sort random values
   t = time(0);
   bubblesort(array,N);
-  times[3] = time(0) - t;
+  times[9] = time(0) - t;
+
+  //sort ascended data
+  t = time(0);
+  bubblesort(array,N);
+  times[10] = time(0) - t;
+
+  //sort descended data
+  invertArray(array, N);
+
+  t = time(0);
+  bubblesort(array,N);
+  times[11] = time(0) - t;
+
 
 
   //insertsort
   printf("Insertsort\n");
   fillArrayFromFile(array, N);
+
+  //sort random values
   t = time(0);
   insertsort(array,N);
-  times[4] = time(0) - t;
+  times[12] = time(0) - t;
+
+  //sort ascended data
+  t = time(0);
+  insertsort(array,N);
+  times[13] = time(0) - t;
+
+  //sort descended data
+  invertArray(array, N);
+
+  t = time(0);
+  insertsort(array,N);
+  times[14] = time(0) - t;
+
 
 
   //selectsort
   printf("Selectsort\n");
   fillArrayFromFile(array, N);
+
+  //sort random values
   t = time(0);
   selectsort(array,N);
-  times[5] = time(0) - t;
+  times[15] = time(0) - t;
+
+  //sort ascended data
+  t = time(0);
+  selectsort(array,N);
+  times[16] = time(0) - t;
+
+  //sort descended data
+  invertArray(array, N);
+
+  t = time(0);
+  selectsort(array,N);
+  times[17] = time(0) - t;
 
 
   writeTimesToFile(times);
@@ -322,6 +411,18 @@ void copyArray(int from[], int to[])
   return;
 }
 
+void invertArray(int array[], int n)
+{
+  int i;
+
+  for(i=0;i<n/2;i++)
+  {
+    swap(array[i],array[n-i-1]);
+  }
+
+  return;
+}
+
 void writeDataToFile(int n)
 {
   int i;
@@ -365,12 +466,30 @@ void writeTimesToFile(int times[])
   fop=fopen("wynik.txt", "a");
 
   fprintf(fop, "Czas dla %d danych\n",N);
-  fprintf(fop, "Quicksort: %d\n", times[0]);
-  fprintf(fop, "Heapsort: %d\n", times[1]);
-  fprintf(fop, "Shellsort: %d\n", times[2]);
-  fprintf(fop, "Bubble: %d\n", times[3]);
-  fprintf(fop, "Insertsort: %d\n", times[4]);
-  fprintf(fop, "Selectsort: %d\n\n", times[5]);
+  fprintf(fop, "Quicksort:\n");
+  fprintf(fop, "  losowo: %d\n", times[0]);
+  fprintf(fop, "  rosnaco: %d\n", times[1]);
+  fprintf(fop, "  malejaco: %d\n", times[2]);
+  fprintf(fop, "Heapsort:\n");
+  fprintf(fop, "  losowo: %d\n", times[3]);
+  fprintf(fop, "  rosnaco: %d\n", times[4]);
+  fprintf(fop, "  malejaco: %d\n", times[5]);
+  fprintf(fop, "Shellsort:\n");
+  fprintf(fop, "  losowo: %d\n", times[6]);
+  fprintf(fop, "  rosnaco: %d\n", times[7]);
+  fprintf(fop, "  malejaco: %d\n", times[8]);
+  fprintf(fop, "Bubble:\n");
+  fprintf(fop, "  losowo: %d\n", times[9]);
+  fprintf(fop, "  rosnaco: %d\n", times[10]);
+  fprintf(fop, "  malejaco: %d\n", times[11]);
+  fprintf(fop, "Insertsort:\n");
+  fprintf(fop, "  losowo: %d\n", times[12]);
+  fprintf(fop, "  rosnaco: %d\n", times[13]);
+  fprintf(fop, "  malejaco: %d\n", times[14]);
+  fprintf(fop, "Selectsort:\n");
+  fprintf(fop, "  losowo: %d\n", times[15]);
+  fprintf(fop, "  rosnaco: %d\n", times[16]);
+  fprintf(fop, "  malejaco: %d\n", times[17]);
 
   fclose(fop);
 
