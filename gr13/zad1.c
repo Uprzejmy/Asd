@@ -3,7 +3,6 @@
 #include <time.h>
 #include <math.h>
 
-double functionF(double t);
 double functionG(double t);
 
 int main()
@@ -49,14 +48,6 @@ int main()
   }
 
   return 0;
-}
-
-double functionF(double t)
-{
-  if(t == 0)
-    return 1.0;
-  
-  return t*t;
 }
 
 double functionG(double t)
