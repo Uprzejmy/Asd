@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <math.h>
 #define N 50
 
 struct node{

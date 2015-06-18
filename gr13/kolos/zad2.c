@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <math.h>
 #define N 50;
 
 struct node{
@@ -9,43 +7,17 @@ struct node{
   struct node* next;
 };
 
-double allocate();
+struct node* allocate();
 
-void printR(struct node* head1,struct node* head2);
+void fun(struct node* head);
+void printR(struct node* head);
 void printI(struct node* head);
 
 int main()
 {
-  struct node* head1,head2;
-  struct node* p1,p2;
-  int j,i = 0;
-
+  struct node* head1;
   head1 = allocate();
-
-  p1 = head1;
-  while(p1->next)
-  {
-    i++;
-    p1 = p1->next;
-  }
-
-  head2 = p1;
-  p2 = head2;
-  i--;
-  p1 = head1;
-
-  while(p1 && i>0)
-  {
-    for(j=0;j<i;j++)
-    {
-      p1 = p1->next;
-    }
-
-    i--;
-    p2->next = p1;
-    p2 = p2->next;
-    p1 = head1;
-  }
+  fun(head1);
 
   printR(head1);
   printI(head1);
@@ -53,13 +25,12 @@ int main()
   return 0;
 }
 
-void printR(struct node* head1,struct node* head2)
+void printR(struct node* head)
 {
-  if(head1)
-  {
-    printf("%lf => ",head->x);
-    printR(head->next);
-  }
+  if(!head)
+    return;
+  printf("<= %lf => ",head->x);
+  printR(head->next);
   
 }
 
@@ -74,14 +45,13 @@ void printI(struct node* head)
   }
 }
 
-int fun()
+void fun(struct node* head)
 {
-  struct node* head1;
-  struct node* p1,p2,p3;
+  struct node* p1;
+  struct node* p2;
+  struct node* p3;
 
-  head1 = allocate();
-
-  p1 = head1;
+  p1 = head;
   p2 = p1->next;
   p3 = p2->next;
 
@@ -92,6 +62,6 @@ int fun()
     p2 = p3;
     p3 = p3->next;
   }
-  
+
   p2->next = p1;
 }
